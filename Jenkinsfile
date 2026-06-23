@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Correctly references your global Jenkins configuration
-        nodejs 'NodeJS20'
-    }
-
     environment {
         // Forces Playwright to use CI-optimized settings
         CI = 'true'
@@ -21,7 +16,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies...'
-                // Using 'npm install' is safer on Windows if package-lock.json is missing or desynced
                 bat 'npm install' 
             }
         }
@@ -51,7 +45,6 @@ pipeline {
     post {
         always {
             echo 'Archiving test results and HTML reports...'
-            // Changed allowMissing to true so the pipeline finishes cleanly even if tests fail to output a report
             publishHTML(target: [
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
