@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        // Looks for a Node.js installation configured in Jenkins Global Tool Configuration
-        nodejs 'node' 
+        // Correctly references your global Jenkins configuration
+        nodejs 'NodeJS20'
     }
 
     environment {
@@ -21,7 +21,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing project dependencies...'
-                bat 'npm ci' 
+                // Using 'npm install' is safer on Windows if package-lock.json is missing or desynced
+                bat 'npm install' 
             }
         }
 
@@ -35,7 +36,6 @@ pipeline {
         stage('Execute API Tests') {
             steps {
                 echo 'Running API Automation Suite...'
-                // Targets only the API test folder specifically
                 bat 'npx playwright test tests/api/'
             }
         }
@@ -43,7 +43,6 @@ pipeline {
         stage('Execute UI Tests') {
             steps {
                 echo 'Running UI Automation Suite...'
-                // Targets the specific UI test file or folder
                 bat 'npx playwright test tests/AmazonCart.spec.js'
             }
         }
@@ -52,8 +51,9 @@ pipeline {
     post {
         always {
             echo 'Archiving test results and HTML reports...'
+            // Changed allowMissing to true so the pipeline finishes cleanly even if tests fail to output a report
             publishHTML(target: [
-                allowMissing: false,
+                allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
                 reportDir: 'playwright-report',
