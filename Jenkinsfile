@@ -15,7 +15,9 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing project dependencies...'
+                echo 'Forcing install of Playwright and core dependencies...'
+                // Explicitly installs the package first so npx can find it locally
+                bat 'npm install @playwright/test --save-dev'
                 bat 'npm install' 
             }
         }
