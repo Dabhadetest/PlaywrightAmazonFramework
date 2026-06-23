@@ -12,13 +12,20 @@ test('Search Product and Add To Cart', async ({ page }) => {
 
     await homePage.searchProduct('iPhone 15');
 
-    await productPage.clickFirstProduct();
+  //  await productPage.clickFirstProduct();
 
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+
+    console.log("Current URL:", page.url());
 
     const price = await productPage.getPrice();
 
-    console.log('Product Price = ₹' + price);
+    console.log("Product Price = ₹" + price);
+
+    await page.screenshot({
+        path: 'productPage.png',
+        fullPage: true
+    });
 
     await productPage.addToCart();
 

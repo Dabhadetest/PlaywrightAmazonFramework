@@ -8,13 +8,18 @@ module.exports = defineConfig({
 
     use: {
         browserName: 'chromium',
+
         headless: false,
+
         viewport: {
             width: 1366,
             height: 768
         },
+
         screenshot: 'only-on-failure',
+
         video: 'retain-on-failure',
+
         trace: 'on-first-retry'
     },
 

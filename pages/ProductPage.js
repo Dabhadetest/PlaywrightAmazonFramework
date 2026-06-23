@@ -3,31 +3,65 @@ class ProductPage {
     constructor(page) {
         this.page = page;
 
-        this.firstProduct = 'a-autoid-1-announce';
+        // First product from search results
+        //this.firstProduct = 'a[href*="/dp/"]';
 
-        this.price = 'span.a-price-whole';
+        // Product price
+        this.price = '.a-price-whole';
 
-        this.addToCartButton = '#add-to-cart-button';
+        // Add To Cart button
+        this.addToCartButton = 'button[id="a-autoid-1-announce"]';
 
+        // Cart count
         this.cartCount = '#nav-cart-count';
     }
 
-    async clickFirstProduct() {
-        await this.page.waitForSelector(this.firstProduct);
-        await this.page.locator(this.firstProduct).first().click();
-    }
+   /* async clickFirstProduct() {
+
+        const products = this.page.locator(this.firstProduct);
+
+        console.log(
+            'Products Found =',
+            await products.count()
+        );
+
+        await products.first().click();
+    }*/
 
     async getPrice() {
-        await this.page.waitForSelector(this.price);
-        return await this.page.locator(this.price).first().textContent();
+
+        await this.page.waitForSelector(
+            this.price,
+            { timeout: 30000 }
+        );
+
+        return await this.page
+            .locator(this.price)
+            .first()
+            .textContent();
     }
 
     async addToCart() {
-        await this.page.click(this.addToCartButton);
+
+        const addToCartBtn = this.page.locator(
+            this.addToCartButton
+        );
+
+        await addToCartBtn.scrollIntoViewIfNeeded();
+
+        await addToCartBtn.waitFor({
+            state: 'visible',
+            timeout: 60000
+        });
+
+        await addToCartBtn.click();
     }
 
     async getCartCount() {
-        return await this.page.locator(this.cartCount).textContent();
+
+        return await this.page
+            .locator(this.cartCount)
+            .textContent();
     }
 }
 
