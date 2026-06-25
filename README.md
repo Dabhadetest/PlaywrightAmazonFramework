@@ -4,6 +4,7 @@
 - Playwright
 - JavaScript
 - Page Object Model (POM)
+- LLM Open AI
 
 ## Features
 - Search Product
