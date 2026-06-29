@@ -6,6 +6,7 @@
     "report": "playwright show-report"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "axios": "^1.18.1",
     "dotenv": "^17.4.2",
     "openai": "^6.45.0",
